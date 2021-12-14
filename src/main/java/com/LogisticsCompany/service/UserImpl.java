@@ -15,7 +15,6 @@ import java.util.List;
 @Slf4j
 public class UserImpl implements UserService {
     private final UserRepo userRepo;
-    //private final RoleRepo roleRepo;
 
 
     public UserImpl(UserRepo userRepo) {
@@ -26,18 +25,6 @@ public class UserImpl implements UserService {
     public AppUser saveUser(AppUser user) {
         return userRepo.save(user);
     }
-
-//    @Override
-//    public Role saveRole(Role role) {
-//        return roleRepo.save(role);
-//    }
-
-//    @Override
-//    public void addRoleToUser(String username, String roleName) {
-//        AppUser user = userRepo.findByUsername(username);
-//        Role role = roleRepo.findByName(roleName);
-//        user.getRole().add(role);
-//    }
 
     @Override
     public AppUser getUser(String username) {
