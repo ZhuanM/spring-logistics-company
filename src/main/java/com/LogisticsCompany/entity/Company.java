@@ -4,4 +4,5 @@ public class Company {
     //TO DO
     //list of addresses
     //List of employees
+    //list of clients(maybe)
 }

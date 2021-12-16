@@ -1,4 +1,4 @@
-package com.LogisticsCompany.entity;
+package com.LogisticsCompany.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

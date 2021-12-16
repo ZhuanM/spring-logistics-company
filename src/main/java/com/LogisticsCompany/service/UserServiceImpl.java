@@ -2,10 +2,12 @@ package com.LogisticsCompany.service;
 
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.entity.Role;
+import com.LogisticsCompany.entity.RoleType;
 import com.LogisticsCompany.repo.RoleRepo;
 import com.LogisticsCompany.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class UserServiceImpl implements UserService {
+    @Autowired
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
 
@@ -26,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser saveUser(AppUser user) {
-        return userRepo.save(user);
+            return userRepo.save(user);
     }
 
     @Override
@@ -37,8 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addRoleToUser(String username, String roleName) {
         AppUser user = userRepo.findByUsername(username);
-        Role role = roleRepo.findByName(roleName);
-        user.setRole(role.getName());
+        //Role role = roleRepo.findByName(roleName);
+        //user.setRole(role);
+        user.setRole(RoleType.valueOf(roleName));
     }
 
     @Override

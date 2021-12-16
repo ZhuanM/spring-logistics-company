@@ -32,21 +32,25 @@ public class LogisticsCompanyApplication {
 					"stoqn_kolev@gmail.com",
 					"Stoqn Kolev",
 					"klimatik1",
+					//new Role(null, "USER"),
 					"username1"));
 			userService.saveUser(new AppUser(null,
 					"oko1@abv.bg",
 					"Mitio Ochite",
 					"parola123",
+					//new Role(null, "USER"),
 					"username2"));
 			userService.saveUser(new AppUser(null,
 					"elichko_slovakiev19@mail.bg",
 					"Elin Slovakiev",
 					"parola321",
+					//new Role(null, "COURIER"),
 					"username3"));
 			userService.saveUser(new AppUser(null,
 					"sk2@mail.bg",
 					"Kole Stoyanov",
 					"klimatik22222",
+					//new Role(null, "ADMIN"),
 					"username4"));
 
 			userService.addRoleToUser("username1", "USER");

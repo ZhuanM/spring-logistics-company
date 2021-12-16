@@ -1,11 +1,11 @@
 package com.LogisticsCompany.entity;
 
 import lombok.Data;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 public class Role {
 
     @Id
