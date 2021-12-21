@@ -1,15 +1,11 @@
 package com.LogisticsCompany.api;
 
 import com.LogisticsCompany.entity.AppUser;
-import com.LogisticsCompany.entity.Role;
-import com.LogisticsCompany.models.UserForm;
 import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import javax.persistence.PostUpdate;
 import java.util.List;
 
 @RestController
@@ -23,31 +19,20 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping(path="/")
+    public String greet() {
+        return "NBU Logistics Company";
+    }
+
     @GetMapping(path="/users")
     public List<AppUser> getAllUsers() {
         return userService.getUsers();
     }
 
-
-    @PostMapping(path="/save_user")
+    @PostMapping(path="/register")
     public AppUser saveUser(@RequestBody AppUser user) {
-        //URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/save_user").toUriString());
         System.out.println(user);
-        //return ResponseEntity.created(uri).body(userService.saveUser(user));
         return userService.saveUser(user);
-    }
-
-    @GetMapping(path="/save_role")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/save_role").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
-    }
-
-    @GetMapping(path="/save")
-    public void addRoleToUser(@RequestBody UserForm userForm) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/save_role").toUriString());
-        userService.addRoleToUser(userForm.getUsername(), userForm.getRoleName());
-        ResponseEntity.ok().build();
     }
 
     @GetMapping(path="/login")
@@ -60,4 +45,29 @@ public class UserController {
             return "Login successful! Welcome back, " + user.getFullName() + "!";
         }
     }
+
+    @PutMapping(path="/update")
+    public String update(@RequestBody AppUser user) {
+        userService.updateUser(user);
+        return "Successfully updated user with username: " + user.getUsername();
+    }
+
+    @DeleteMapping(path="/delete")
+    public String delete(@RequestParam String username) {
+        AppUser user = userService.getUser(username);
+        if(user != null) {
+            userService.deleteUser(user.getId());
+            return "User " + user.getUsername() + " successfully deleted!";
+        }
+        else {
+            return "User " + username + " does not exist!";
+        }
+    }
+
+    //    @GetMapping(path="/save")
+//    public void addRoleToUser(@RequestBody UserForm userForm) {
+//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/save_role").toUriString());
+//        userService.addRoleToUser(userForm.getUsername(), userForm.getRoleName());
+//        ResponseEntity.ok().build();
+//    }
 }

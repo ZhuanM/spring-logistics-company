@@ -1,14 +1,9 @@
 package com.LogisticsCompany.entity;
 
-import lombok.*;
-import org.hibernate.annotations.Target;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-//@NoArgsConstructor
-//@AllArgsConstructor
 public class AppUser{
 
     @Id
@@ -24,19 +19,12 @@ public class AppUser{
     @Column(name="fullName", nullable = false)
     private String fullName;
 
-    @Column(name = "password", length = 25, nullable = false)
+    @Column(name = "password", length = 30, nullable = false)
     private String password;
 
-    //@Embedded
-    //private Role role;
+    //or @Embedded private Role role;
     @Enumerated(EnumType.STRING)
     private RoleType role;
-
-    //@Column(name = "role", nullable = false)
-    public RoleType getRoleName() {
-        return role;
-    }
-
 
     public AppUser() {
     }

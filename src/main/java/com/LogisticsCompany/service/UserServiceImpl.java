@@ -1,12 +1,10 @@
 package com.LogisticsCompany.service;
 
 import com.LogisticsCompany.entity.AppUser;
-import com.LogisticsCompany.entity.Role;
 import com.LogisticsCompany.entity.RoleType;
-import com.LogisticsCompany.repo.RoleRepo;
 import com.LogisticsCompany.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,32 +14,41 @@ import java.util.List;
 @Service
 //@RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     private final UserRepo userRepo;
-    private final RoleRepo roleRepo;
 
-    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo) {
+   public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
-        this.roleRepo = roleRepo;
-    }
+   }
 
     @Override
-    public AppUser saveUser(AppUser user) {
+    public AppUser saveUser(AppUser user) throws ConstraintViolationException {
+       // if(userRepo.findByUsername(user.getUsername()) == null)
             return userRepo.save(user);
+        //else throw new ConstraintViolationException("Username already exists!");
     }
 
     @Override
-    public Role saveRole(Role roleName) {
-        return roleRepo.save(roleName);
+    public void updateUser(AppUser user) {
+        AppUser tmp;
+        tmp = userRepo.findByUsername(user.getUsername());
+        tmp.setEmail(user.getEmail());
+        tmp.setFullName(user.getFullName());
+        tmp.setPassword(user.getPassword());
+        userRepo.save(tmp);
     }
+
+    @Override
+    public void deleteUser(Long id) {
+       //AppUser tmp = userRepo.findByUsername(username);
+       userRepo.deleteById(id);
+    }
+
 
     @Override
     public void addRoleToUser(String username, String roleName) {
         AppUser user = userRepo.findByUsername(username);
-        //Role role = roleRepo.findByName(roleName);
-        //user.setRole(role);
         user.setRole(RoleType.valueOf(roleName));
     }
 
