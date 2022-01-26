@@ -5,7 +5,6 @@ import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PostUpdate;
 import java.util.List;
 
 @RestController
@@ -19,6 +18,8 @@ public class UserController {
         this.userService = userService;
     }
 
+
+
     @GetMapping(path="/")
     public String greet() {
         return "NBU Logistics Company";
@@ -27,7 +28,7 @@ public class UserController {
     @GetMapping(path="/users")
     public List<AppUser> getAllUsers() {
         return userService.getUsers();
-    }
+    } //using userService.findAll();???
 
     @PostMapping(path="/register")
     public AppUser saveUser(@RequestBody AppUser user) {
@@ -51,6 +52,14 @@ public class UserController {
         userService.updateUser(user);
         return "Successfully updated user with username: " + user.getUsername();
     }
+
+    /*@PutMapping(path="/update")
+    public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
+        AppUser user = userService.getUser(username);
+        user.setFullName(user.getFullName());
+        user.setEmail(user.getEmail());
+        return this.userService.saveUser(user);
+    }*/
 
     @DeleteMapping(path="/delete")
     public String delete(@RequestParam String username) {

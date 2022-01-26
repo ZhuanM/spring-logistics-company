@@ -1,6 +1,8 @@
 package com.LogisticsCompany.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +27,9 @@ public class AppUser{
     //or @Embedded private Role role;
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<Delivery> deliveries = new HashSet<Delivery>();
 
     public AppUser() {
     }
