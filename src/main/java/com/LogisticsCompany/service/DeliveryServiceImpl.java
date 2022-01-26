@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -27,7 +28,12 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public void updateDelivery(Delivery delivery) {
-        //todo
+        Delivery tmp;
+        tmp = deliveryRepo.findBySender(delivery.getSender());
+        System.out.println("--------------------------------------" + tmp + "-------------------------------");
+        tmp.setRecipientAddress(delivery.getRecipientAddress());
+        tmp.setCurrent_location(delivery.getCurrent_location());
+        deliveryRepo.save(tmp);
     }
 
     @Override
@@ -41,7 +47,16 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public List<Delivery> getDeliveries() {
-        return deliveryRepo.findAll();
+    public List<String> getDeliveries() {
+        List<Delivery> res = deliveryRepo.findAll();
+//        string to test
+        List<String> deliveries =
+                res.stream()
+                        .map(Delivery::toString)
+                        .collect(Collectors.toList());
+
+        return deliveries;
+
+        //return deliveryRepo.findAll();
     }
 }

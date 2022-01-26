@@ -1,15 +1,14 @@
 package com.LogisticsCompany;
 
-import com.LogisticsCompany.entity.AppUser;
-import com.LogisticsCompany.entity.Delivery;
-import com.LogisticsCompany.entity.DeliveryLocation;
-import com.LogisticsCompany.entity.RoleType;
+import com.LogisticsCompany.entity.*;
+import com.LogisticsCompany.service.CompanyService;
 import com.LogisticsCompany.service.DeliveryService;
 import com.LogisticsCompany.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
@@ -25,7 +24,7 @@ public class LogisticsCompanyApplication {
 //	}
 
 	@Bean
-	CommandLineRunner runner(UserService userService, DeliveryService deliveryService) {
+	CommandLineRunner runner(UserService userService, DeliveryService deliveryService, CompanyService companyService) {
 		return args -> {
 
 			userService.saveUser(new AppUser(null,
@@ -61,13 +60,19 @@ public class LogisticsCompanyApplication {
 					"user");
 			userService.saveUser(tmp);
 
+			Company company = new Company(null, "Ekont");
+			companyService.saveCompany(company);
+
 			Delivery d = new Delivery(null,
+					company,
 					tmp,
 					"Gosho",
 					DeliveryLocation.DELIVERED,
 					"Varna",
 					118.5);
 			deliveryService.saveDelivery(d);
+
+			//System.out.println(deliveryService.getDeliveries());
 
 			userService.addRoleToUser("username1", "USER");
 			userService.addRoleToUser("username3", "COURIER");

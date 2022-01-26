@@ -3,12 +3,13 @@ package com.LogisticsCompany.api;
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/")
+//@RestController
+@RequestMapping(path = "/")
 public class UserController {
 
     @Autowired
