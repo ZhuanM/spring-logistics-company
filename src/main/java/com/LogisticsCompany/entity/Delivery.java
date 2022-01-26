@@ -11,8 +11,8 @@ import javax.persistence.*;
 @Table(name = "delivery")
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class Delivery {
 
     @Id
@@ -21,23 +21,36 @@ public class Delivery {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name= "user_id")
+    @JoinColumn(name= "sender_id")
     private AppUser sender;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private AppUser recipient;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="user_id")
+//    private AppUser recipient;
+    @Column(name = "recipient")
+    private String recipient;
 
     @Enumerated(EnumType.STRING)
     @Column(name="delivery_current_location")
     private DeliveryLocation current_location;
 
     @Column (name = "recipientAdress")
-    private String recipientAdress;
+    private String recipientAddress;
 
     @Column(name = "weight")
     private double weight;
+
+    public Delivery() {
+    }
+
+    public Delivery(Long id, AppUser sender, String recipient, DeliveryLocation current_location, String recipientAddress, double weight) {
+        this.id = id;
+        this.sender = sender;
+        this.recipient = recipient;
+        this.current_location = current_location;
+        this.recipientAddress = recipientAddress;
+        this.weight = weight;
+    }
 
     @Override
     public String toString() {
@@ -46,7 +59,7 @@ public class Delivery {
                 ", sender=" + sender +
                 ", recipient=" + recipient +
                 ", location=" + current_location +
-                ", recipientAdress='" + recipientAdress + '\'' +
+                ", recipientAdress='" + recipientAddress + '\'' +
                 ", weight=" + weight +
                 '}';
     }

@@ -14,8 +14,6 @@ public class Company {
     @Column(name = "name", nullable = false)
     private String name;
 
-
-
     //TO DO
     //list of addresses
     //List of employees

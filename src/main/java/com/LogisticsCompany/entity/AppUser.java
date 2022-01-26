@@ -28,7 +28,7 @@ public class AppUser{
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender", cascade = CascadeType.ALL)
     private Set<Delivery> deliveries = new HashSet<Delivery>();
 
     public AppUser() {
