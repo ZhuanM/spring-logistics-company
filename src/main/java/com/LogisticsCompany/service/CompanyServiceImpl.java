@@ -49,7 +49,6 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public double profitFromTimePeriod(LocalDate start, LocalDate end) {
         List<Delivery> deliveries = companyRepo.profitFromTimePeriod(start, end);
-        System.out.println(deliveries);
 
         double total = 0;
 
