@@ -3,12 +3,11 @@ package com.LogisticsCompany.api;
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RestController
+@RestController
 @RequestMapping(path = "/")
 public class UserController {
 
@@ -20,11 +19,10 @@ public class UserController {
     }
 
 
-
-    @GetMapping(path="/")
-    public String greet() {
-        return "NBU Logistics Company";
-    }
+//    @GetMapping(path="/")
+//    public String greet() {
+//        return "NBU Logistics Company";
+//    }
 
     @GetMapping(path="/users")
     public List<AppUser> getAllUsers() {

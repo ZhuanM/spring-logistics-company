@@ -1,6 +1,5 @@
 package com.LogisticsCompany.service;
 
-import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.entity.Delivery;
 import com.LogisticsCompany.repo.DeliveryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,9 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Override
     public void updateDelivery(Delivery delivery) {
         Delivery tmp;
-        tmp = deliveryRepo.findBySender(delivery.getSender());
-        System.out.println("--------------------------------------" + tmp + "-------------------------------");
+        tmp = deliveryRepo.findByName(delivery.getName());
         tmp.setRecipientAddress(delivery.getRecipientAddress());
-        tmp.setCurrent_location(delivery.getCurrent_location());
+        tmp.setStatus(delivery.getCurrent_location());
         deliveryRepo.save(tmp);
     }
 
