@@ -57,4 +57,17 @@ public class DeliveryServiceImpl implements DeliveryService{
 
         //return deliveryRepo.findAll();
     }
+
+    @Override
+    public List<Delivery> takeAllDeliveries() { return deliveryRepo.takeAllDeliveries(); }
+
+    @Override
+    public List<Delivery> takeAllDeliveriesRegisteredByEmployee(Long id) { return deliveryRepo.takeAllDeliveriesRegisteredByEmployee(id); }
+
+    @Override
+    public List<Delivery> takeAllDeliveriesThatAreNotReceived() { return deliveryRepo.takeAllDeliveriesThatAreNotReceived(); }
+
+    @Override
+    public List<Delivery> takeAllDeliveriesForCustomer(String sender) { return deliveryRepo.takeAllDeliveriesForCustomer(sender); }
+
 }

@@ -1,8 +1,10 @@
 package com.LogisticsCompany;
 
 import com.LogisticsCompany.entity.*;
+import com.LogisticsCompany.repo.CompanyRepo;
 import com.LogisticsCompany.repo.DeliveryRepo;
 import com.LogisticsCompany.repo.OfficeRepo;
+import com.LogisticsCompany.repo.UserRepo;
 import com.LogisticsCompany.service.CompanyService;
 import com.LogisticsCompany.service.DeliveryService;
 import com.LogisticsCompany.service.OfficeService;
@@ -14,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.List;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
@@ -78,7 +81,7 @@ public class LogisticsCompanyApplication {
 					tmp,
 					"username1",
 					"Gosho",
-					DeliveryLocation.IN_COURIER,
+					DeliveryLocation.DELIVERED,
 					"Varna",
 					LocalDate.now(),
 					LocalDate.now(),
@@ -87,9 +90,11 @@ public class LogisticsCompanyApplication {
 			deliveryService.saveDelivery(d);
 			tmp.addDelivery(d);
 
+
+
 			//System.out.println(deliveryService.getDeliveries());
-			System.out.println("------------------------"+deliveryRepo.findByName("d_user_2"));
-			System.out.println("------------------------"+company.getOfficeList());
+//			System.out.println("------------------------"+deliveryRepo.findByName("d_user_2"));
+//			System.out.println("------------------------"+company.getOfficeList());
 
 			userService.addRoleToUser("username1", "USER");
 			userService.addRoleToUser("username3", "COURIER");

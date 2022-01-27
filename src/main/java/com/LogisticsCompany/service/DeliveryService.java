@@ -11,4 +11,8 @@ public interface DeliveryService {
     void deleteDelivery(Long id);
     Delivery getDelivery(Long id);
     List<String> getDeliveries();
+    List<Delivery> takeAllDeliveries();
+    List<Delivery> takeAllDeliveriesRegisteredByEmployee(Long id);
+    List<Delivery> takeAllDeliveriesThatAreNotReceived();
+    List<Delivery> takeAllDeliveriesForCustomer(String sender);
 }
