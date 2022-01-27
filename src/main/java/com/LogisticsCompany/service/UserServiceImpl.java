@@ -3,6 +3,8 @@ package com.LogisticsCompany.service;
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.entity.RoleType;
 import com.LogisticsCompany.repo.UserRepo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,28 +24,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Transactional
-public class UserServiceImpl implements UserService/*, UserDetailsService*/ {
+@Slf4j
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private final UserRepo userRepo;
+    private  PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        AppUser user = userRepo.findByUsername(username);
-//        if(user == null) {
-//            System.out.println(("User not found id DB"));
-//            throw new UsernameNotFoundException("User not found id DB");
-//        }
-//        else {
-//            System.out.println(("User found id DB" + username));
-//        }
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
-//
-//        return new User(user.getUsername(), user.getPassword(), authorities);
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser user = userRepo.findByUsername(username);
+        if(user == null) {
+            System.out.println(("User not found id DB"));
+            throw new UsernameNotFoundException("User not found id DB");
+        }
+        else {
+            System.out.println(("User found id DB" + username));
+        }
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+    }
 
    public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
@@ -47,6 +56,7 @@ public class UserServiceImpl implements UserService/*, UserDetailsService*/ {
     @Override
     public AppUser saveUser(AppUser user) throws ConstraintViolationException {
        // if(userRepo.findByUsername(user.getUsername()) == null)
+            user.setPassword(passwordEncoder.encode(user.getPassword())); //encoding user password and setting it to the password of the user
             return userRepo.save(user);
         //else throw new ConstraintViolationException("Username already exists!");
     }

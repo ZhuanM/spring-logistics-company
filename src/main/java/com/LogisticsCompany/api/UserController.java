@@ -2,13 +2,16 @@ package com.LogisticsCompany.api;
 
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.service.UserService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RestController
+@RestController
 @RequestMapping(path = "/")
 public class UserController {
 
@@ -54,13 +57,13 @@ public class UserController {
         return "Successfully updated user with username: " + user.getUsername();
     }
 
-    /*@PutMapping(path="/update")
+    @PutMapping(path="/update")
     public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
-        AppUser user = userService.getUser(username);
+        user = userService.getUser(username);
         user.setFullName(user.getFullName());
         user.setEmail(user.getEmail());
         return this.userService.saveUser(user);
-    }*/
+    }
 
     @DeleteMapping(path="/delete")
     public String delete(@RequestParam String username) {
@@ -74,10 +77,16 @@ public class UserController {
         }
     }
 
-    //    @GetMapping(path="/save")
-//    public void addRoleToUser(@RequestBody UserForm userForm) {
-//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/save_role").toUriString());
-//        userService.addRoleToUser(userForm.getUsername(), userForm.getRoleName());
-//        ResponseEntity.ok().build();
-//    }
+   /*     @GetMapping(path="/save")
+    public void addRoleToUser(@RequestBody UseForm userForm) {
+
+        userService.addRoleToUser(userForm.getUsername(), userForm.getRoleName());
+
+    }*/
+
+    }
+    @Data
+    class UseForm{
+        private String username;
+        private String roleName;
 }
