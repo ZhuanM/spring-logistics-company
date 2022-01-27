@@ -1,8 +1,11 @@
 package com.LogisticsCompany.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(name = "users")
@@ -28,8 +31,8 @@ public class AppUser{
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender", cascade = CascadeType.ALL)
-    private Set<Delivery> deliveries = new HashSet<Delivery>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "registeredBy", cascade = CascadeType.ALL)
+    private Set<Delivery> deliveries = new TreeSet<Delivery>();
 
     public AppUser() {
     }
@@ -98,6 +101,10 @@ public class AppUser{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addDelivery(Delivery delivery) {
+        this.deliveries.add(delivery);
     }
 
     @Override

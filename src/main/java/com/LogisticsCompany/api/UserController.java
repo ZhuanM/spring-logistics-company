@@ -4,9 +4,11 @@ import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +25,10 @@ public class UserController {
     }
 
 
-
-    @GetMapping(path="/")
-    public String greet() {
-        return "NBU Logistics Company";
-    }
+//    @GetMapping(path="/")
+//    public String greet() {
+//        return "NBU Logistics Company";
+//    }
 
     @GetMapping(path="/users")
     public List<AppUser> getAllUsers() {

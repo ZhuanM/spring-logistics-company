@@ -1,16 +1,25 @@
 package com.LogisticsCompany;
 
 import com.LogisticsCompany.entity.*;
+import com.LogisticsCompany.repo.DeliveryRepo;
+import com.LogisticsCompany.repo.OfficeRepo;
 import com.LogisticsCompany.service.CompanyService;
 import com.LogisticsCompany.service.DeliveryService;
+import com.LogisticsCompany.service.OfficeService;
 import com.LogisticsCompany.service.UserService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+<<<<<<< HEAD
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+=======
+
+import java.time.LocalDate;
+>>>>>>> 3818e93216cb88812af703f39c969cd0ba9c7074
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
@@ -26,7 +35,8 @@ public class LogisticsCompanyApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(UserService userService, DeliveryService deliveryService, CompanyService companyService) {
+	CommandLineRunner runner(UserService userService, DeliveryService deliveryService, CompanyService companyService,
+							 DeliveryRepo deliveryRepo, OfficeService officeService) {
 		return args -> {
 
 			userService.saveUser(new AppUser(null,
@@ -58,23 +68,34 @@ public class LogisticsCompanyApplication {
 					"asd@gmail.com",
 					"Test Subject",
 					"123",
-					RoleType.USER,
+					RoleType.ADMIN,
 					"user");
 			userService.saveUser(tmp);
 
 			Company company = new Company(null, "Ekont");
 			companyService.saveCompany(company);
 
+			Office o = new Office(null, "Office1", "Montevideo 15", company);
+			officeService.saveOffice(o);
+			company.addOffice(o);
+
 			Delivery d = new Delivery(null,
 					company,
 					tmp,
+					"username1",
 					"Gosho",
-					DeliveryLocation.DELIVERED,
+					DeliveryLocation.IN_COURIER,
 					"Varna",
-					118.5);
+					LocalDate.now(),
+					LocalDate.now(),
+					118.5,
+					67.99);
 			deliveryService.saveDelivery(d);
+			tmp.addDelivery(d);
 
 			//System.out.println(deliveryService.getDeliveries());
+			System.out.println("------------------------"+deliveryRepo.findByName("d_user_2"));
+			System.out.println("------------------------"+company.getOfficeList());
 
 			userService.addRoleToUser("username1", "USER");
 			userService.addRoleToUser("username3", "COURIER");

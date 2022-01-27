@@ -7,7 +7,6 @@ import com.LogisticsCompany.service.CompanyService;
 import com.LogisticsCompany.service.DeliveryService;
 import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,23 +28,27 @@ public class DeliveryController {
         this.companyService = companyService;
     }
 
-    @GetMapping(path="/")
-    public String greet() {
-        return "Page for deliveries of NBU Logistics Company";
-    }
+//    @GetMapping(path="/")
+//    public String greet() {
+//        return "Page for deliveries of NBU Logistics Company";
+//    }
 
     @PostMapping(path="/save-delivery")
     public Delivery saveDelivery(@RequestBody Delivery delivery) {
-        AppUser user = userService.getUser(delivery.getSender().getUsername());
+        AppUser user = userService.getUser(delivery.getRegisteredBy().getUsername());
         Company company = companyService.getCompany(delivery.getCompany().getId());
 
         Delivery tmp = new Delivery(null,
                 company,
                 user,
+                delivery.getSenderUsername(),
                 delivery.getRecipient(),
                 delivery.getCurrent_location(),
                 delivery.getRecipientAddress(),
-                delivery.getWeight());
+                delivery.getSentDate(),
+                delivery.getETA(),
+                delivery.getWeight(),
+                delivery.getPrice());
 
         return deliveryService.saveDelivery(tmp);
     }

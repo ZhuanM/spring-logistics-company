@@ -1,11 +1,9 @@
 package com.LogisticsCompany.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "delivery")
@@ -13,10 +11,10 @@ import javax.persistence.*;
 //@Getter
 //@NoArgsConstructor
 //@AllArgsConstructor
-public class Delivery {
+public class Delivery implements Comparable<Delivery>{
 
     @Transient
-    private transient long ORDER_ID = 1;
+    private static transient long ORDER_ID = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,40 +29,56 @@ public class Delivery {
     private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name= "sender_id")
-    private AppUser sender;
+    @JoinColumn(name= "registered_by")
+    private AppUser registeredBy;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="user_id")
-//    private AppUser recipient;
+    @Column(name = "sender")
+    private String senderUsername;
+
     @Column(name = "recipient")
     private String recipient;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="delivery_current_location")
-    private DeliveryLocation current_location;
+    @Column(name="status")
+    private DeliveryLocation status;
 
     @Column (name = "recipientAddress")
     private String recipientAddress;
 
+    @Column(name = "date_sent")
+    private LocalDate sentDate;
+
+    @Column(name = "arrival_date")
+    private LocalDate ETA;
+
     @Column(name = "weight")
     private double weight;
+
+    @Column(name = "price")
+    private double price;
 
     public Delivery() {
     }
 
-    public Delivery(Long id, Company company, AppUser sender,
+    public Delivery(Long id, Company company, AppUser registeredBy,
+                    String senderUsername,
                     String recipient, DeliveryLocation current_location,
-                    String recipientAddress, double weight) {
+                    String recipientAddress,
+                    LocalDate sentDate, LocalDate ETA,
+                    double weight, double price) {
         this.setORDER_ID();
         this.id = id;
-        this.name = "d_" + sender.getUsername() + "_" + this.getORDER_ID();
+        this.name = "d_" + senderUsername + "_" + this.getORDER_ID();
         this.company = company;
-        this.sender = sender;
+        this.registeredBy = registeredBy;
+        this.senderUsername = senderUsername;
         this.recipient = recipient;
-        this.current_location = current_location;
+        this.status = current_location;
         this.recipientAddress = recipientAddress;
+        this.sentDate = sentDate;
+        this.ETA = ETA;
         this.weight = weight;
+        this.price = price;
     }
 
     //Getters
@@ -85,8 +99,12 @@ public class Delivery {
         return company;
     }
 
-    public AppUser getSender() {
-        return sender;
+    public AppUser getRegisteredBy() {
+        return registeredBy;
+    }
+
+    public String getSenderUsername() {
+        return senderUsername;
     }
 
     public String getRecipient() {
@@ -94,21 +112,37 @@ public class Delivery {
     }
 
     public DeliveryLocation getCurrent_location() {
-        return current_location;
+        return status;
     }
 
     public String getRecipientAddress() {
         return recipientAddress;
     }
 
+    public DeliveryLocation getStatus() {
+        return status;
+    }
+
+    public LocalDate getSentDate() {
+        return sentDate;
+    }
+
+    public LocalDate getETA() {
+        return ETA;
+    }
+
     public double getWeight() {
         return weight;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     //Setters
 
     public void setORDER_ID() {
-        this.ORDER_ID = this.getORDER_ID() + 1;
+        ORDER_ID = this.getORDER_ID() + 1;
     }
 
     public void setId(Long id) {
@@ -123,36 +157,60 @@ public class Delivery {
         this.company = company;
     }
 
-    public void setSender(AppUser sender) {
-        this.sender = sender;
+    public void setRegisteredBy(AppUser registeredBy) {
+        this.registeredBy = registeredBy;
+    }
+
+    public void setSenderUsername(String senderUsername) {
+        this.senderUsername = senderUsername;
     }
 
     public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
 
-    public void setCurrent_location(DeliveryLocation current_location) {
-        this.current_location = current_location;
+    public void setStatus(DeliveryLocation current_location) {
+        this.status = current_location;
     }
 
     public void setRecipientAddress(String recipientAddress) {
         this.recipientAddress = recipientAddress;
     }
 
+    public void setSentDate(LocalDate sentDate) {
+        this.sentDate = sentDate;
+    }
+
+    public void setETA(LocalDate ETA) {
+        this.ETA = ETA;
+    }
+
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     @Override
     public String toString() {
         return "Delivery{" +
                 "id=" + id +
-                ", name=" + name +
-                //", sender=" + sender +
-                ", recipient=" + recipient +
-                ", location=" + current_location +
+                ", name='" + name + '\'' +
+                ", senderUsername='" + senderUsername + '\'' +
+                ", recipient='" + recipient + '\'' +
+                ", status=" + status +
                 ", recipientAddress='" + recipientAddress + '\'' +
+                ", sentDate=" + sentDate +
+                ", ETA=" + ETA +
                 ", weight=" + weight +
+                ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Delivery d) {
+        return this.getId().compareTo(d.getId());
     }
 }
