@@ -1,5 +1,6 @@
 package com.LogisticsCompany.api;
 
+import com.LogisticsCompany.dto.OfficeDTO;
 import com.LogisticsCompany.entity.Company;
 import com.LogisticsCompany.entity.Office;
 import com.LogisticsCompany.service.CompanyService;
@@ -7,10 +8,11 @@ import com.LogisticsCompany.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/api/offices")
 public class OfficeController {
 
     @Autowired
@@ -24,8 +26,13 @@ public class OfficeController {
         this.companyService = companyService;
     }
 
-    @PostMapping(path="/save-office")
-    public Office saveOffice(@RequestBody Office office) {
+    @GetMapping(path="")
+    public String greet() {
+        return "Page for offices of NBU Logistics Company";
+    }
+
+    @PostMapping(path="/save")
+    public OfficeDTO saveOffice(@RequestBody Office office) {
         Company company = companyService.getCompany(office.getCompany().getId());
 
         Office tmp = new Office(null,
@@ -33,16 +40,17 @@ public class OfficeController {
                 office.getAddress(),
                 company);
 
-        return officeService.saveOffice(tmp);
+        officeService.saveOffice(tmp);
+        return officeService.convertToDTO(tmp);
     }
 
-    @PutMapping(path="/update-office")
+    @PutMapping(path="/update")
     public String update(@RequestBody Office office) {
         officeService.updateOffice(office);
         return "Successfully updated office with name: " + office.getName();
     }
 
-    @DeleteMapping(path="/delete-office")
+    @DeleteMapping(path="/delete")
     public String delete(@RequestParam Long id) {
         Office office = officeService.getOfficeById(id);
         if(office != null) {
@@ -54,19 +62,26 @@ public class OfficeController {
         }
     }
 
-    @GetMapping(path="/offices/all")
-    public List<Office> getAllOffices() {
-        return officeService.getOffices();
+    @GetMapping(path="/all")
+    public List<OfficeDTO> getAllOffices() {
+        List<Office> deliveries = officeService.getOffices();
+        List<OfficeDTO> officeDTOS = new ArrayList<>();
+
+        for(Office o : deliveries) {
+            OfficeDTO officeDTO = officeService.convertToDTO(o);
+            officeDTOS.add(officeDTO);
+        }
+        return officeDTOS;
     }
 
     @GetMapping(path="/office")
-    public Office getDelivery(@RequestParam long id) {
-        Office delivery = officeService.getOfficeById(Long.valueOf(id));
-        if(delivery == null) {
-            return new Office();
+    public OfficeDTO getDelivery(@RequestParam Long id) {
+        Office office = officeService.getOfficeById(id);
+        if(office == null) {
+            return new OfficeDTO();
         }
         else {
-            return delivery;
+            return officeService.convertToDTO(office);
         }
     }
 }

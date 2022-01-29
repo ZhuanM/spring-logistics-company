@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(path = "/home")
+@RequestMapping(path = "")
 public class MainPageController {
 
-    @GetMapping(path="/home")
+    @GetMapping(path = "")
     public String greet() {
-        return "NBU Logistics Company";
+        return "Main page of NBU Logistics Company";
     }
 }

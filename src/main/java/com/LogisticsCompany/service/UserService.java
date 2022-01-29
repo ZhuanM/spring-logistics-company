@@ -1,5 +1,6 @@
 package com.LogisticsCompany.service;
 
+import com.LogisticsCompany.dto.AppUserDTO;
 import com.LogisticsCompany.entity.AppUser;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public interface UserService {
     void addRoleToUser(String username, String roleName);
     AppUser getUser(String username);
     List<AppUser> getUsers();
+    AppUserDTO convertToDTO(AppUser user);
+    AppUser convertToEntity(AppUserDTO userDTO);
     List<AppUser> getAllEmployees();
     List<AppUser> getAllCustomers();
 }

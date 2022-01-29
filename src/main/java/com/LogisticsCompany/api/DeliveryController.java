@@ -1,5 +1,6 @@
 package com.LogisticsCompany.api;
 
+import com.LogisticsCompany.dto.DeliveryDTO;
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.entity.Company;
 import com.LogisticsCompany.entity.Delivery;
@@ -9,10 +10,11 @@ import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/api/deliveries")
 public class DeliveryController {
 
     @Autowired
@@ -28,13 +30,13 @@ public class DeliveryController {
         this.companyService = companyService;
     }
 
-//    @GetMapping(path="/")
-//    public String greet() {
-//        return "Page for deliveries of NBU Logistics Company";
-//    }
+    @GetMapping(path="")
+    public String greet() {
+        return "Page for deliveries of NBU Logistics Company";
+    }
 
-    @PostMapping(path="/save-delivery")
-    public Delivery saveDelivery(@RequestBody Delivery delivery) {
+    @PostMapping(path="/save")
+    public DeliveryDTO saveDelivery(@RequestBody Delivery delivery) {
         AppUser user = userService.getUser(delivery.getRegisteredBy().getUsername());
         Company company = companyService.getCompany(delivery.getCompany().getId());
 
@@ -50,16 +52,17 @@ public class DeliveryController {
                 delivery.getWeight(),
                 delivery.getPrice());
 
-        return deliveryService.saveDelivery(tmp);
+        deliveryService.saveDelivery(tmp);
+        return deliveryService.convertToDTO(tmp);
     }
 
-    @PutMapping(path="/update-delivery")
+    @PutMapping(path="/update")
     public String update(@RequestBody Delivery delivery) {
         deliveryService.updateDelivery(delivery);
         return "Successfully updated delivery with name: " + delivery.getName();
     }
 
-    @DeleteMapping(path="/delete-delivery")
+    @DeleteMapping(path="/delete")
     public String delete(@RequestParam Long id) {
         Delivery delivery = deliveryService.getDelivery(id);
         if(delivery != null) {
@@ -71,19 +74,26 @@ public class DeliveryController {
         }
     }
 
-    @GetMapping(path="/deliveries/all")
-    public List<String> getAllDeliveries() {
-        return deliveryService.getDeliveries();
+    @GetMapping(path="/all")
+    public List<DeliveryDTO> getAllDeliveries() {
+        List<Delivery> deliveries = deliveryService.getDeliveries();
+        List<DeliveryDTO> deliveryDTOS = new ArrayList<>();
+
+        for(Delivery d : deliveries) {
+            DeliveryDTO deliveryDTO = deliveryService.convertToDTO(d);
+            deliveryDTOS.add(deliveryDTO);
+        }
+        return deliveryDTOS;
     }
 
     @GetMapping(path="/delivery")
-    public Delivery getDelivery(@RequestParam long id) {
-        Delivery delivery = deliveryService.getDelivery(Long.valueOf(id));
+    public DeliveryDTO getDelivery(@RequestParam Long id) {
+        Delivery delivery = deliveryService.getDelivery(id);
         if(delivery == null) {
-            return new Delivery();
+            return new DeliveryDTO();
         }
         else {
-            return delivery;
+            return deliveryService.convertToDTO(delivery);
         }
     }
 

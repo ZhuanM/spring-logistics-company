@@ -1,32 +1,16 @@
-package com.LogisticsCompany.entity;
+package com.LogisticsCompany.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+public class OfficeDTO {
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "offices")
-//@JsonIgnoreProperties({"company", "hibernateLazyInitializer", "handler"})
-public class Office {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "office_name")
     private String name;
-
-    @Column(name = "address", unique = true, nullable = false)
     private String address;
+    private CompanyDTO company;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    public Office() {
+    public OfficeDTO() {
     }
 
-    public Office(Long id, String name, String address, Company company) {
+    public OfficeDTO(Long id, String name, String address, CompanyDTO company) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -46,7 +30,7 @@ public class Office {
         return address;
     }
 
-    public Company getCompany() {
+    public CompanyDTO getCompany() {
         return company;
     }
 
@@ -63,16 +47,17 @@ public class Office {
         this.address = address;
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(CompanyDTO company) {
         this.company = company;
     }
 
     @Override
     public String toString() {
-        return "Office{" +
+        return "OfficeDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
+                ", company=" + company +
                 '}';
     }
 }

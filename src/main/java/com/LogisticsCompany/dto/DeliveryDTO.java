@@ -1,80 +1,39 @@
-package com.LogisticsCompany.entity;
+package com.LogisticsCompany.dto;
 
-import com.fasterxml.jackson.annotation.*;
-
-import javax.persistence.*;
+import com.LogisticsCompany.entity.DeliveryLocation;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "delivery")
-//@Setter
-//@Getter
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@JsonIgnoreProperties({"company", "registeredBy", "ORDER_ID", "hibernateLazyInitializer", "handler"})
-public class Delivery implements Comparable<Delivery>{
+public class DeliveryDTO {
 
-    @Transient
-    private static transient long ORDER_ID = 1;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
-
-    @Column(name = "name", unique = true, nullable = false)
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name= "registered_by")
-    private AppUser registeredBy;
-
-    @Column(name = "sender")
+    private CompanyDTO company;
+    private AppUserDTO registeredBy;
     private String senderUsername;
-
-    @Column(name = "recipient")
     private String recipient;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name="status")
     private DeliveryLocation status;
-
-    @Column (name = "recipientAddress")
     private String recipientAddress;
-
-    @Column(name = "date_sent")
     private LocalDate sentDate;
-
-    @Column(name = "arrival_date")
     private LocalDate ETA;
-
-    @Column(name = "weight")
     private double weight;
-
-    @Column(name = "price")
     private double price;
 
-    public Delivery() {
+    public DeliveryDTO() {
     }
 
-    public Delivery(Long id, Company company, AppUser registeredBy,
-                    String senderUsername,
-                    String recipient, DeliveryLocation current_location,
-                    String recipientAddress,
-                    LocalDate sentDate, LocalDate ETA,
-                    double weight, double price) {
-        this.setORDER_ID();
+    public DeliveryDTO(Long id, String name,
+                       CompanyDTO company, AppUserDTO registeredBy,
+                       String senderUsername, String recipient,
+                       DeliveryLocation status, String recipientAddress,
+                       LocalDate sentDate, LocalDate ETA,
+                       double weight, double price) {
         this.id = id;
-        this.name = "d_" + senderUsername + "_" + this.getORDER_ID();
+        this.name = name;
         this.company = company;
         this.registeredBy = registeredBy;
         this.senderUsername = senderUsername;
         this.recipient = recipient;
-        this.status = current_location;
+        this.status = status;
         this.recipientAddress = recipientAddress;
         this.sentDate = sentDate;
         this.ETA = ETA;
@@ -83,11 +42,6 @@ public class Delivery implements Comparable<Delivery>{
     }
 
     //Getters
-
-    public long getORDER_ID() {
-        return ORDER_ID;
-    }
-
     public Long getId() {
         return id;
     }
@@ -96,11 +50,11 @@ public class Delivery implements Comparable<Delivery>{
         return name;
     }
 
-    public Company getCompany() {
+    public CompanyDTO getCompany() {
         return company;
     }
 
-    public AppUser getRegisteredBy() {
+    public AppUserDTO getRegisteredBy() {
         return registeredBy;
     }
 
@@ -112,16 +66,12 @@ public class Delivery implements Comparable<Delivery>{
         return recipient;
     }
 
-    public DeliveryLocation getCurrent_location() {
+    public DeliveryLocation getStatus() {
         return status;
     }
 
     public String getRecipientAddress() {
         return recipientAddress;
-    }
-
-    public DeliveryLocation getStatus() {
-        return status;
     }
 
     public LocalDate getSentDate() {
@@ -141,11 +91,6 @@ public class Delivery implements Comparable<Delivery>{
     }
 
     //Setters
-
-    public void setORDER_ID() {
-        ORDER_ID = this.getORDER_ID() + 1;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -154,11 +99,11 @@ public class Delivery implements Comparable<Delivery>{
         this.name = name;
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(CompanyDTO company) {
         this.company = company;
     }
 
-    public void setRegisteredBy(AppUser registeredBy) {
+    public void setRegisteredBy(AppUserDTO registeredBy) {
         this.registeredBy = registeredBy;
     }
 
@@ -170,8 +115,8 @@ public class Delivery implements Comparable<Delivery>{
         this.recipient = recipient;
     }
 
-    public void setStatus(DeliveryLocation current_location) {
-        this.status = current_location;
+    public void setStatus(DeliveryLocation status) {
+        this.status = status;
     }
 
     public void setRecipientAddress(String recipientAddress) {
@@ -196,9 +141,11 @@ public class Delivery implements Comparable<Delivery>{
 
     @Override
     public String toString() {
-        return "Delivery{" +
+        return "DeliveryDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", company=" + company +
+                ", registeredBy=" + registeredBy +
                 ", senderUsername='" + senderUsername + '\'' +
                 ", recipient='" + recipient + '\'' +
                 ", status=" + status +
@@ -208,10 +155,5 @@ public class Delivery implements Comparable<Delivery>{
                 ", weight=" + weight +
                 ", price=" + price +
                 '}';
-    }
-
-    @Override
-    public int compareTo(Delivery d) {
-        return this.getId().compareTo(d.getId());
     }
 }

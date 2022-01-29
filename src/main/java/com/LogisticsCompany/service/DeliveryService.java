@@ -1,5 +1,6 @@
 package com.LogisticsCompany.service;
 
+import com.LogisticsCompany.dto.DeliveryDTO;
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.entity.Delivery;
 
@@ -10,7 +11,9 @@ public interface DeliveryService {
     void updateDelivery(Delivery delivery);
     void deleteDelivery(Long id);
     Delivery getDelivery(Long id);
-    List<String> getDeliveries();
+    List<Delivery> getDeliveries();
+    DeliveryDTO convertToDTO(Delivery delivery);
+    Delivery convertToEntity(DeliveryDTO deliveryDTO);
     List<Delivery> takeAllDeliveries();
     List<Delivery> takeAllDeliveriesRegisteredByEmployee(Long id);
     List<Delivery> takeAllDeliveriesThatAreNotReceived();

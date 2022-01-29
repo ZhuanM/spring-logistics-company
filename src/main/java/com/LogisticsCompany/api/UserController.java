@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/api/users")
 public class UserController {
 
     @Autowired
@@ -25,12 +25,12 @@ public class UserController {
     }
 
 
-//    @GetMapping(path="/")
-//    public String greet() {
-//        return "NBU Logistics Company";
-//    }
+    @GetMapping(path="")
+    public String greet() {
+        return "NBU Logistics Company";
+    }
 
-    @GetMapping(path="/users")
+    @GetMapping(path="/all")
     public List<AppUser> getAllUsers() {
         return userService.getUsers();
     } //using userService.findAll();???
@@ -58,13 +58,13 @@ public class UserController {
         return "Successfully updated user with username: " + user.getUsername();
     }
 
-    @PutMapping(path="/update")
-    public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
-        user = userService.getUser(username);
-        user.setFullName(user.getFullName());
-        user.setEmail(user.getEmail());
-        return this.userService.saveUser(user);
-    }
+//    @PutMapping(path="/update")
+//    public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
+//        user = userService.getUser(username);
+//        user.setFullName(user.getFullName());
+//        user.setEmail(user.getEmail());
+//        return this.userService.saveUser(user);
+//    }
 
     @DeleteMapping(path="/delete")
     public String delete(@RequestParam String username) {
@@ -85,9 +85,4 @@ public class UserController {
 
     }*/
 
-    }
-    @Data
-    class UseForm{
-        private String username;
-        private String roleName;
 }

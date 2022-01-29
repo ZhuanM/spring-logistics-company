@@ -1,5 +1,6 @@
 package com.LogisticsCompany.service;
 
+import com.LogisticsCompany.dto.CompanyDTO;
 import com.LogisticsCompany.entity.Company;
 import com.LogisticsCompany.entity.Delivery;
 import com.LogisticsCompany.repo.CompanyRepo;
@@ -44,6 +45,25 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public List<Company> getCompanies() {
         return companyRepo.findAll();
+    }
+
+    @Override
+    public CompanyDTO convertToDTO(Company company) {
+        CompanyDTO companyDTO = new CompanyDTO();
+        if(company != null) {
+            companyDTO.setId(company.getId());
+            companyDTO.setName(company.getName());
+        }
+        return companyDTO;
+    }
+
+    @Override
+    public Company convertToEntity(CompanyDTO companyDTO) {
+        Company company = new Company();
+        if(companyDTO != null) {
+            company = companyRepo.getById(companyDTO.getId());
+        }
+        return company;
     }
 
     @Override

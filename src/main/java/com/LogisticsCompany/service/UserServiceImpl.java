@@ -1,5 +1,6 @@
 package com.LogisticsCompany.service;
 
+import com.LogisticsCompany.dto.AppUserDTO;
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.entity.RoleType;
 import com.LogisticsCompany.repo.UserRepo;
@@ -68,7 +69,6 @@ public class UserServiceImpl implements UserService/*, UserDetailsService*/ {
        userRepo.deleteById(id);
     }
 
-
     @Override
     public void addRoleToUser(String username, String roleName) {
         AppUser user = userRepo.findByUsername(username);
@@ -83,6 +83,34 @@ public class UserServiceImpl implements UserService/*, UserDetailsService*/ {
     @Override
     public List<AppUser> getUsers() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public AppUserDTO convertToDTO(AppUser user) {
+        AppUserDTO userDTO = new AppUserDTO();
+        if(user != null) {
+            userDTO.setId(user.getId());
+            userDTO.setUsername(user.getUsername());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setFullName(user.getFullName());
+            userDTO.setPassword(user.getPassword());
+            userDTO.setRole(user.getRole());
+        }
+        return userDTO;
+    }
+
+    @Override
+    public AppUser convertToEntity(AppUserDTO userDTO) {
+        AppUser user = new AppUser();
+        if(userDTO != null) {
+            user.setId(userDTO.getId());
+            user.setUsername(userDTO.getUsername());
+            user.setEmail(userDTO.getEmail());
+            user.setFullName(userDTO.getFullName());
+            user.setPassword(userDTO.getPassword());
+            user.setRole(userDTO.getRole());
+        }
+        return user;
     }
 
     @Override

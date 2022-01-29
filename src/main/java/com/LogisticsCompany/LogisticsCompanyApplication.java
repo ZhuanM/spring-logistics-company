@@ -43,8 +43,8 @@ public class LogisticsCompanyApplication {
 					//new Role(null, "USER"),
 					"username1"));
 			userService.saveUser(new AppUser(null,
-					"oko1@abv.bg",
-					"Mitio Ochite",
+					"aaa@abv.bg",
+					"Asdf Fdsa",
 					"parola123",
 					RoleType.ADMIN,
 					"username2"));
@@ -89,6 +89,20 @@ public class LogisticsCompanyApplication {
 					67.99);
 			deliveryService.saveDelivery(d);
 			tmp.addDelivery(d);
+
+			Delivery d2 = new Delivery(null,
+					company,
+					tmp,
+					"username2",
+					"Ivan",
+					DeliveryLocation.IN_OFFICE,
+					"Berlin",
+					LocalDate.now(),
+					LocalDate.now(),
+					65,
+					1239.99);
+			deliveryService.saveDelivery(d2);
+			tmp.addDelivery(d2);
 
 
 
