@@ -12,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,26 +26,26 @@ import java.util.List;
 @Service
 //@RequiredArgsConstructor
 @Transactional
-public class UserServiceImpl implements UserService/*, UserDetailsService*/ {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private final UserRepo userRepo;
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        AppUser user = userRepo.findByUsername(username);
-//        if(user == null) {
-//            System.out.println(("User not found id DB"));
-//            throw new UsernameNotFoundException("User not found id DB");
-//        }
-//        else {
-//            System.out.println(("User found id DB" + username));
-//        }
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
-//
-//        return new User(user.getUsername(), user.getPassword(), authorities);
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser user = userRepo.findByUsername(username);
+        if(user == null) {
+            System.out.println(("User not found id DB"));
+            throw new UsernameNotFoundException("User not found id DB");
+        }
+        else {
+            System.out.println(("User found id DB" + username));
+        }
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+
+        return new User(user.getUsername(), user.getPassword(), authorities);
+    }
 
    public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;

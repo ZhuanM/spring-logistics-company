@@ -1,5 +1,6 @@
 package com.LogisticsCompany.api;
 
+import com.LogisticsCompany.dto.AppUserDTO;
 import com.LogisticsCompany.entity.AppUser;
 import com.LogisticsCompany.service.UserService;
 import lombok.Data;
@@ -58,14 +59,6 @@ public class UserController {
         return "Successfully updated user with username: " + user.getUsername();
     }
 
-//    @PutMapping(path="/update")
-//    public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
-//        user = userService.getUser(username);
-//        user.setFullName(user.getFullName());
-//        user.setEmail(user.getEmail());
-//        return this.userService.saveUser(user);
-//    }
-
     @DeleteMapping(path="/delete")
     public String delete(@RequestParam String username) {
         AppUser user = userService.getUser(username);
@@ -78,6 +71,17 @@ public class UserController {
         }
     }
 
+    @GetMapping(path="/user")
+    public AppUserDTO getDelivery(@RequestParam String username) {
+        AppUser user = userService.getUser(username);
+        if(user == null) {
+            return new AppUserDTO();
+        }
+        else {
+            return userService.convertToDTO(user);
+        }
+    }
+
    /*     @GetMapping(path="/save")
     public void addRoleToUser(@RequestBody UseForm userForm) {
 
@@ -85,4 +89,11 @@ public class UserController {
 
     }*/
 
+//    @PutMapping(path="/update")
+//    public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
+//        user = userService.getUser(username);
+//        user.setFullName(user.getFullName());
+//        user.setEmail(user.getEmail());
+//        return this.userService.saveUser(user);
+//    }
 }
