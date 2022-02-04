@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4202")
 @RestController
 @RequestMapping(path = "/api/users")
 public class UserController {
@@ -71,6 +72,7 @@ public class UserController {
         }
     }
 
+    //@CrossOrigin(origins = "http://localhost:4202")
     @GetMapping(path="/user")
     public AppUserDTO getDelivery(@RequestParam String username) {
         AppUser user = userService.getUser(username);

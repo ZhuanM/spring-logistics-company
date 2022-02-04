@@ -16,6 +16,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +33,19 @@ public class LogisticsCompanyApplication {
 //	@Bean
 //	public BCryptPasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
+//	}
+
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("http://localhost:8080/api/**")
+//						.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+//						.allowedOrigins("http://localhost:4202")
+//				 		.exposedHeaders("Authorization");
+//			}
+//		};
 //	}
 
 	@Bean

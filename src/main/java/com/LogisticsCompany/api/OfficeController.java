@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4202")
 @RestController
 @RequestMapping(path = "/api/offices")
 public class OfficeController {
