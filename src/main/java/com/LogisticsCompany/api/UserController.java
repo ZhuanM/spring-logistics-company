@@ -1,13 +1,20 @@
 package com.LogisticsCompany.api;
 
+import com.LogisticsCompany.config.JwtUtility;
 import com.LogisticsCompany.dto.AppUserDTO;
 import com.LogisticsCompany.entity.AppUser;
+import com.LogisticsCompany.model.JwtResponse;
 import com.LogisticsCompany.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +28,10 @@ public class UserController {
 
     @Autowired
     private final UserService userService;
+    @Autowired
+    private JwtUtility jwtUtility;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -38,9 +49,28 @@ public class UserController {
     } //using userService.findAll();???
 
     @PostMapping(path="/register")
-    public AppUser saveUser(@RequestBody AppUser user) {
-        System.out.println(user);
-        return userService.saveUser(user);
+    public void register(@RequestBody AppUserDTO userDTO) throws Exception {
+        AppUser user = userService.convertToEntity(userDTO);
+        System.out.println("-------------" + user);
+        userService.saveUser(user);
+//        AppUser tmp = userService.getUser(user.getUsername());
+//        System.out.println("-------------" + tmp);
+//
+//        try {
+//            authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(
+//                            user.getUsername(),
+//                            user.getPassword()
+//                    )
+//            );
+//        } catch (BadCredentialsException e) {
+//            throw new Exception("INVALID_CREDENTIALS", e);
+//        }
+
+        //final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
+        //final String token = jwtUtility.generateToken(userDetails);
+
+        //return  new JwtResponse(token);
     }
 
     @GetMapping(path="/login")
@@ -72,7 +102,6 @@ public class UserController {
         }
     }
 
-    //@CrossOrigin(origins = "http://localhost:4202")
     @GetMapping(path="/user")
     public AppUserDTO getDelivery(@RequestParam String username) {
         AppUser user = userService.getUser(username);

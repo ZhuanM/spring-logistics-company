@@ -4,13 +4,12 @@ package com.LogisticsCompany.api;
 import com.LogisticsCompany.config.JwtUtility;
 import com.LogisticsCompany.model.JwtRequest;
 import com.LogisticsCompany.model.JwtResponse;
-import com.LogisticsCompany.service.UserServiceImpl;
+import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4202")
@@ -25,7 +24,7 @@ public class MainPageController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @GetMapping(path = "")
     public String greet() {
@@ -46,11 +45,8 @@ public class MainPageController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
 
-        final UserDetails userDetails
-                = userService.loadUserByUsername(jwtRequest.getUsername());
-
-        final String token =
-                jwtUtility.generateToken(userDetails);
+        final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
+        final String token = jwtUtility.generateToken(userDetails);
 
         return  new JwtResponse(token);
     }
