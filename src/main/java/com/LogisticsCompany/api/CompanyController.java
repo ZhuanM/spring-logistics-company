@@ -1,11 +1,13 @@
 package com.LogisticsCompany.api;
 
 import com.LogisticsCompany.entity.Company;
+import com.LogisticsCompany.model.CompanyName;
 import com.LogisticsCompany.service.CompanyService;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -23,16 +25,16 @@ public class CompanyController {
     }
 
     @GetMapping(path = "/name")
-    public String getCompanyName() {
+    public CompanyName getCompanyName() {
         Company c = companyService.getCompany(1L);
-        return c.getName();
+        return new CompanyName(c.getName());
     }
 
     @GetMapping(path = "/profit")
-    public double getProfitBetween(@RequestParam String startDate, @RequestParam String endDate) {
+    public BigDecimal getProfitBetween(@RequestParam String startDate, @RequestParam String endDate) {
         Company c = companyService.getCompany(1L);
         LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        return companyService.profitFromTimePeriod(start, end);
+        return BigDecimal.valueOf(companyService.profitFromTimePeriod(start, end));
     }
 }
