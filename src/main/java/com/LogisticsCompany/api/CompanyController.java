@@ -29,10 +29,10 @@ public class CompanyController {
     }
 
     @GetMapping(path = "/profit")
-    public double getProfitBetween(@RequestParam String start, @RequestParam String end) {
+    public double getProfitBetween(@RequestParam String startDate, @RequestParam String endDate) {
         Company c = companyService.getCompany(1L);
-        LocalDate startDate = LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        LocalDate endDate = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        return companyService.profitFromTimePeriod(startDate, endDate);
+        LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return companyService.profitFromTimePeriod(start, end);
     }
 }
