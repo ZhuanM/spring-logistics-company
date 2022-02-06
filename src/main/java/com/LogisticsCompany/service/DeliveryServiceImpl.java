@@ -3,14 +3,13 @@ package com.LogisticsCompany.service;
 import com.LogisticsCompany.dto.DeliveryDTO;
 import com.LogisticsCompany.entity.Delivery;
 import com.LogisticsCompany.repo.DeliveryRepo;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,15 +34,15 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public void updateDelivery(Delivery delivery) {
+    public void updateDelivery(DeliveryDTO deliveryDTO) {
         Delivery tmp;
-        tmp = deliveryRepo.findByName(delivery.getName());
+        tmp = deliveryRepo.findByName(deliveryDTO.getName());
         //tmp.setRecipientAddress(delivery.getRecipientAddress());
-        tmp.setRecipient(delivery.getRecipient());
-        tmp.setSentDate(delivery.getSentDate());
-        tmp.setETA(delivery.getETA());
-        tmp.setStatus(delivery.getCurrent_location());
-        tmp.setPrice(delivery.getPrice());
+        tmp.setRecipient(deliveryDTO.getRecipient());
+        tmp.setSentDate(LocalDate.parse(deliveryDTO.getSentDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        tmp.setETA(LocalDate.parse(deliveryDTO.getETA(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        tmp.setStatus(deliveryDTO.getStatus());
+        tmp.setPrice(deliveryDTO.getPrice());
         deliveryRepo.save(tmp);
     }
 
@@ -68,14 +67,14 @@ public class DeliveryServiceImpl implements DeliveryService{
         if(delivery != null) {
             deliveryDTO.setId(delivery.getId());
             deliveryDTO.setName(delivery.getName());
-            deliveryDTO.setCompany(companyService.convertToDTO(delivery.getCompany()));
-            deliveryDTO.setRegisteredBy(userService.convertToDTO(delivery.getRegisteredBy()));
+            deliveryDTO.setCompanySymbol(delivery.getCompany().getSymbol());
+            deliveryDTO.setRegisteredBy(delivery.getRegisteredBy().getUsername());
             deliveryDTO.setSenderUsername(delivery.getSenderUsername());
             deliveryDTO.setRecipient(delivery.getRecipient());
             deliveryDTO.setStatus(delivery.getStatus());
             deliveryDTO.setRecipientAddress(delivery.getRecipientAddress());
-            deliveryDTO.setSentDate(delivery.getSentDate());
-            deliveryDTO.setETA(delivery.getETA());
+            deliveryDTO.setSentDate(delivery.getSentDate().toString());
+            deliveryDTO.setETA(delivery.getETA().toString());
             deliveryDTO.setWeight(delivery.getWeight());
             deliveryDTO.setPrice(delivery.getPrice());
         }
@@ -88,14 +87,14 @@ public class DeliveryServiceImpl implements DeliveryService{
         if(deliveryDTO != null) {
             delivery.setId(deliveryDTO.getId());
             delivery.setName(deliveryDTO.getName());
-            delivery.setCompany(companyService.convertToEntity(deliveryDTO.getCompany()));
-            delivery.setRegisteredBy(userService.convertToEntity(deliveryDTO.getRegisteredBy()));
+            delivery.setCompany(companyService.getCompanyBySymbol(deliveryDTO.getCompanySymbol()));
+            delivery.setRegisteredBy(userService.getUser(deliveryDTO.getRegisteredBy()));
             delivery.setSenderUsername(deliveryDTO.getSenderUsername());
             delivery.setRecipient(deliveryDTO.getRecipient());
             delivery.setStatus(deliveryDTO.getStatus());
             delivery.setRecipientAddress(deliveryDTO.getRecipientAddress());
-            delivery.setSentDate(deliveryDTO.getSentDate());
-            delivery.setETA(deliveryDTO.getETA());
+            delivery.setSentDate(LocalDate.parse(deliveryDTO.getSentDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            delivery.setETA(LocalDate.parse(deliveryDTO.getETA(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             delivery.setWeight(deliveryDTO.getWeight());
             delivery.setPrice(deliveryDTO.getPrice());
         }

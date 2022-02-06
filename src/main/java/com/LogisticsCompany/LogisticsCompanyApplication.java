@@ -30,23 +30,6 @@ public class LogisticsCompanyApplication {
 		SpringApplication.run(LogisticsCompanyApplication.class, args);
 	}
 
-//	@Bean
-//	public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//	}
-
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("http://localhost:8080/api/**")
-//						.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-//						.allowedOrigins("http://localhost:4202")
-//				 		.exposedHeaders("Authorization");
-//			}
-//		};
-//	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -91,7 +74,7 @@ public class LogisticsCompanyApplication {
 					"user");
 			userService.saveUser(tmp);
 
-			Company company = new Company(null, "Ekont");
+			Company company = new Company(null, "Ekont", "EKNT");
 			companyService.saveCompany(company);
 
 			Office o = new Office(null, "Office1", "Montevideo 15", company);
@@ -125,12 +108,6 @@ public class LogisticsCompanyApplication {
 					1239.99);
 			deliveryService.saveDelivery(d2);
 			tmp.addDelivery(d2);
-
-
-
-			//System.out.println(deliveryService.getDeliveries());
-//			System.out.println("------------------------"+deliveryRepo.findByName("d_user_2"));
-//			System.out.println("------------------------"+company.getOfficeList());
 
 			userService.addRoleToUser("username1", "USER");
 			userService.addRoleToUser("username3", "COURIER");

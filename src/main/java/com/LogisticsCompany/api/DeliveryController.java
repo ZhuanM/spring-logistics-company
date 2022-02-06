@@ -10,6 +10,8 @@ import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,30 +39,30 @@ public class DeliveryController {
     }
 
     @PostMapping(path="/save")
-    public DeliveryDTO saveDelivery(@RequestBody Delivery delivery) {
-        AppUser user = userService.getUser(delivery.getRegisteredBy().getUsername());
-        Company company = companyService.getCompany(delivery.getCompany().getId());
+    public DeliveryDTO saveDelivery(@RequestBody DeliveryDTO deliveryDTO) {
+        AppUser user = userService.getUser(deliveryDTO.getRegisteredBy());
+        Company company = companyService.getCompanyBySymbol(deliveryDTO.getCompanySymbol());
 
         Delivery tmp = new Delivery(null,
                 company,
                 user,
-                delivery.getSenderUsername(),
-                delivery.getRecipient(),
-                delivery.getCurrent_location(),
-                delivery.getRecipientAddress(),
-                delivery.getSentDate(),
-                delivery.getETA(),
-                delivery.getWeight(),
-                delivery.getPrice());
+                deliveryDTO.getSenderUsername(),
+                deliveryDTO.getRecipient(),
+                deliveryDTO.getStatus(),
+                deliveryDTO.getRecipientAddress(),
+                LocalDate.parse(deliveryDTO.getSentDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                LocalDate.parse(deliveryDTO.getETA(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                deliveryDTO.getWeight(),
+                deliveryDTO.getPrice());
 
         deliveryService.saveDelivery(tmp);
         return deliveryService.convertToDTO(tmp);
     }
 
     @PostMapping(path="/update")
-    public String update(@RequestBody Delivery delivery) {
-        deliveryService.updateDelivery(delivery);
-        return "Successfully updated delivery with name: " + delivery.getName();
+    public String update(@RequestBody DeliveryDTO deliveryDTO) {
+        deliveryService.updateDelivery(deliveryDTO);
+        return "Successfully updated delivery with name: " + deliveryDTO.getName();
     }
 
     @DeleteMapping(path="/delete")

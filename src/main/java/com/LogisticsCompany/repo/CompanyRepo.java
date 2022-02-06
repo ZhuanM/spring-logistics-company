@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface CompanyRepo extends JpaRepository<Company, Long> {
     Optional<Company> findById(Long aLong);
+    Company findBySymbol(String symbol);
 
     @Query("SELECT d FROM Delivery d WHERE d.status = 'DELIVERED' AND d.ETA >= ?1 AND d.ETA <= ?2")
     List<Delivery> profitFromTimePeriod(LocalDate start, LocalDate end);

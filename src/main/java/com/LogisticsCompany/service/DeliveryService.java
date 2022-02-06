@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DeliveryService {
     Delivery saveDelivery(Delivery delivery);
-    void updateDelivery(Delivery delivery);
+    void updateDelivery(DeliveryDTO deliveryDTO);
     void deleteDelivery(Long id);
     Delivery getDelivery(Long id);
     List<Delivery> getDeliveries();

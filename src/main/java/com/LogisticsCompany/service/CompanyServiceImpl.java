@@ -43,6 +43,11 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
+    public Company getCompanyBySymbol(String symbol) {
+        return companyRepo.findBySymbol(symbol);
+    }
+
+    @Override
     public List<Company> getCompanies() {
         return companyRepo.findAll();
     }

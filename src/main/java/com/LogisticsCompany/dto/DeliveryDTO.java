@@ -7,14 +7,14 @@ public class DeliveryDTO {
 
     private Long id;
     private String name;
-    private CompanyDTO company;
-    private AppUserDTO registeredBy;
+    private String companySymbol;
+    private String registeredBy;
     private String senderUsername;
     private String recipient;
     private DeliveryLocation status;
     private String recipientAddress;
-    private LocalDate sentDate;
-    private LocalDate ETA;
+    private String sentDate;
+    private String ETA;
     private double weight;
     private double price;
 
@@ -22,21 +22,21 @@ public class DeliveryDTO {
     }
 
     public DeliveryDTO(Long id, String name,
-                       CompanyDTO company, AppUserDTO registeredBy,
+                       String companySymbol, String registeredBy,
                        String senderUsername, String recipient,
                        DeliveryLocation status, String recipientAddress,
                        LocalDate sentDate, LocalDate ETA,
                        double weight, double price) {
         this.id = id;
         this.name = name;
-        this.company = company;
+        this.companySymbol = companySymbol;
         this.registeredBy = registeredBy;
         this.senderUsername = senderUsername;
         this.recipient = recipient;
         this.status = status;
         this.recipientAddress = recipientAddress;
-        this.sentDate = sentDate;
-        this.ETA = ETA;
+        this.sentDate = sentDate.toString();
+        this.ETA = ETA.toString();
         this.weight = weight;
         this.price = price;
     }
@@ -50,11 +50,11 @@ public class DeliveryDTO {
         return name;
     }
 
-    public CompanyDTO getCompany() {
-        return company;
+    public String getCompanySymbol() {
+        return companySymbol;
     }
 
-    public AppUserDTO getRegisteredBy() {
+    public String getRegisteredBy() {
         return registeredBy;
     }
 
@@ -74,11 +74,11 @@ public class DeliveryDTO {
         return recipientAddress;
     }
 
-    public LocalDate getSentDate() {
+    public String getSentDate() {
         return sentDate;
     }
 
-    public LocalDate getETA() {
+    public String getETA() {
         return ETA;
     }
 
@@ -99,11 +99,11 @@ public class DeliveryDTO {
         this.name = name;
     }
 
-    public void setCompany(CompanyDTO company) {
-        this.company = company;
+    public void setCompanySymbol(String companySymbol) {
+        this.companySymbol = companySymbol;
     }
 
-    public void setRegisteredBy(AppUserDTO registeredBy) {
+    public void setRegisteredBy(String registeredBy) {
         this.registeredBy = registeredBy;
     }
 
@@ -123,11 +123,11 @@ public class DeliveryDTO {
         this.recipientAddress = recipientAddress;
     }
 
-    public void setSentDate(LocalDate sentDate) {
+    public void setSentDate(String sentDate) {
         this.sentDate = sentDate;
     }
 
-    public void setETA(LocalDate ETA) {
+    public void setETA(String ETA) {
         this.ETA = ETA;
     }
 
@@ -144,7 +144,7 @@ public class DeliveryDTO {
         return "DeliveryDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", company=" + company +
+                ", company=" + companySymbol +
                 ", registeredBy=" + registeredBy +
                 ", senderUsername='" + senderUsername + '\'' +
                 ", recipient='" + recipient + '\'' +
