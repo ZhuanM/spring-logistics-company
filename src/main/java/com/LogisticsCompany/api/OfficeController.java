@@ -45,7 +45,7 @@ public class OfficeController {
         return officeService.convertToDTO(tmp);
     }
 
-    @PutMapping(path="/update")
+    @PostMapping(path="/update")
     public String update(@RequestBody Office office) {
         officeService.updateOffice(office);
         return "Successfully updated office with name: " + office.getName();

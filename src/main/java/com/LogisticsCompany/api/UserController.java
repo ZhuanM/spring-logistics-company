@@ -3,19 +3,13 @@ package com.LogisticsCompany.api;
 import com.LogisticsCompany.config.JwtUtility;
 import com.LogisticsCompany.dto.AppUserDTO;
 import com.LogisticsCompany.entity.AppUser;
-import com.LogisticsCompany.model.JwtResponse;
 import com.LogisticsCompany.service.UserService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -42,11 +36,6 @@ public class UserController {
     public String greet() {
         return "NBU Logistics Company";
     }
-
-    @GetMapping(path="/all")
-    public List<AppUser> getAllUsers() {
-        return userService.getUsers();
-    } //using userService.findAll();???
 
     @PostMapping(path="/register")
     public void register(@RequestBody AppUserDTO userDTO) throws Exception {
@@ -113,18 +102,19 @@ public class UserController {
         }
     }
 
-   /*     @GetMapping(path="/save")
-    public void addRoleToUser(@RequestBody UseForm userForm) {
+    @GetMapping(path="/all")
+    public List<AppUser> getAllUsers() {
+        return userService.getUsers();
+    } //using userService.findAll();???
 
-        userService.addRoleToUser(userForm.getUsername(), userForm.getRoleName());
+    @GetMapping(path = "/employees")
+    public List<AppUser> getAllEmployees() {
+        return userService.getAllEmployees();
+    }
 
-    }*/
+    @GetMapping(path = "/customers")
+    public List<AppUser> getAllCustomers() {
+        return userService.getAllCustomers();
+    }
 
-//    @PutMapping(path="/update")
-//    public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
-//        user = userService.getUser(username);
-//        user.setFullName(user.getFullName());
-//        user.setEmail(user.getEmail());
-//        return this.userService.saveUser(user);
-//    }
 }

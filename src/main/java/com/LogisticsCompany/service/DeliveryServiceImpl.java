@@ -38,8 +38,12 @@ public class DeliveryServiceImpl implements DeliveryService{
     public void updateDelivery(Delivery delivery) {
         Delivery tmp;
         tmp = deliveryRepo.findByName(delivery.getName());
-        tmp.setRecipientAddress(delivery.getRecipientAddress());
+        //tmp.setRecipientAddress(delivery.getRecipientAddress());
+        tmp.setRecipient(delivery.getRecipient());
+        tmp.setSentDate(delivery.getSentDate());
+        tmp.setETA(delivery.getETA());
         tmp.setStatus(delivery.getCurrent_location());
+        tmp.setPrice(delivery.getPrice());
         deliveryRepo.save(tmp);
     }
 

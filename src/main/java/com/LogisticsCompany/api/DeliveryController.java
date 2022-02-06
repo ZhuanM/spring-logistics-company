@@ -57,7 +57,7 @@ public class DeliveryController {
         return deliveryService.convertToDTO(tmp);
     }
 
-    @PutMapping(path="/update")
+    @PostMapping(path="/update")
     public String update(@RequestBody Delivery delivery) {
         deliveryService.updateDelivery(delivery);
         return "Successfully updated delivery with name: " + delivery.getName();
@@ -96,6 +96,18 @@ public class DeliveryController {
         else {
             return deliveryService.convertToDTO(delivery);
         }
+    }
+
+    @GetMapping(path = "/all/user")
+    public List<DeliveryDTO> getAllDeliveriesFromUser(@RequestParam String username) {
+        List<Delivery> deliveries = deliveryService.takeAllDeliveriesForCustomer(username);
+        List<DeliveryDTO> deliveriesDTOS = new ArrayList<>();
+
+        for(Delivery d : deliveries) {
+            DeliveryDTO deliveryDTO = deliveryService.convertToDTO(d);
+            deliveriesDTOS.add(deliveryDTO);
+        }
+        return deliveriesDTOS;
     }
 
 }
