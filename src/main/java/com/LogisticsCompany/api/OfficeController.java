@@ -46,21 +46,21 @@ public class OfficeController {
     }
 
     @PostMapping(path="/update")
-    public String update(@RequestBody Office office) {
+    public void update(@RequestBody Office office) {
         officeService.updateOffice(office);
-        return "Successfully updated office with name: " + office.getName();
+        //return "Successfully updated office with name: " + office.getName();
     }
 
     @DeleteMapping(path="/delete")
-    public String delete(@RequestParam Long id) {
+    public void delete(@RequestParam Long id) {
         Office office = officeService.getOfficeById(id);
         if(office != null) {
             officeService.deleteOffice(office.getId());
-            return "Office " + office.getName() + " successfully deleted!";
+            //return "Office " + office.getName() + " successfully deleted!";
         }
-        else {
-            return "Delivery does not exist!";
-        }
+//        else {
+//            return "Delivery does not exist!";
+//        }
     }
 
     @GetMapping(path="/all")

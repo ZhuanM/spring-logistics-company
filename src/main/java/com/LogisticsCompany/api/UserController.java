@@ -49,21 +49,21 @@ public class UserController {
     }
 
     @PostMapping(path="/update")
-    public String update(@RequestBody AppUser user) {
+    public void update(@RequestBody AppUser user) {
         userService.updateUser(user);
-        return "Successfully updated user with username: " + user.getUsername();
+        //return "Successfully updated user with username: " + user.getUsername();
     }
 
     @DeleteMapping(path="/delete")
-    public String delete(@RequestParam String username) {
+    public void delete(@RequestParam String username) {
         AppUser user = userService.getUser(username);
         if(user != null) {
             userService.deleteUser(user.getId());
-            return "User " + user.getUsername() + " successfully deleted!";
+            //return "User " + user.getUsername() + " successfully deleted!";
         }
-        else {
-            return "User " + username + " does not exist!";
-        }
+//        else {
+//            return "User " + username + " does not exist!";
+//        }
     }
 
     @GetMapping(path="/user")

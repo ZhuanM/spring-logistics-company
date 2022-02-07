@@ -53,28 +53,28 @@ public class DeliveryController {
                 LocalDate.parse(deliveryDTO.getSentDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 LocalDate.parse(deliveryDTO.getETA(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 deliveryDTO.getWeight(),
-                deliveryDTO.getPrice());
+                deliveryDTO.getWeight() * 2.5);
 
         deliveryService.saveDelivery(tmp);
         return deliveryService.convertToDTO(tmp);
     }
 
     @PostMapping(path="/update")
-    public String update(@RequestBody DeliveryDTO deliveryDTO) {
+    public void update(@RequestBody DeliveryDTO deliveryDTO) {
         deliveryService.updateDelivery(deliveryDTO);
-        return "Successfully updated delivery with name: " + deliveryDTO.getName();
+        //return "Successfully updated delivery with name: " + deliveryDTO.getName();
     }
 
     @DeleteMapping(path="/delete")
-    public String delete(@RequestParam Long id) {
+    public void delete(@RequestParam Long id) {
         Delivery delivery = deliveryService.getDelivery(id);
         if(delivery != null) {
             deliveryService.deleteDelivery(delivery.getId());
-            return "Delivery " + delivery.getName() + " successfully deleted!";
+            //return "Delivery " + delivery.getName() + " successfully deleted!";
         }
-        else {
-            return "Delivery does not exist!";
-        }
+//        else {
+//            return "Delivery does not exist!";
+//        }
     }
 
     @GetMapping(path="/all")
