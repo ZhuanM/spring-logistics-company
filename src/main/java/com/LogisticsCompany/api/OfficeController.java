@@ -27,28 +27,23 @@ public class OfficeController {
         this.companyService = companyService;
     }
 
-    @GetMapping(path="")
-    public String greet() {
-        return "Page for offices of NBU Logistics Company";
-    }
-
     @PostMapping(path="/save")
     public OfficeDTO saveOffice(@RequestBody Office office) {
-        Company company = companyService.getCompany(office.getCompany().getId());
-
-        Office tmp = new Office(null,
-                office.getName(),
-                office.getAddress(),
-                company);
-
-        officeService.saveOffice(tmp);
-        return officeService.convertToDTO(tmp);
+//        Company company = companyService.getCompany(office.getCompany().getId());
+//
+//        Office tmp = new Office(null,
+//                office.getName(),
+//                office.getAddress(),
+//                company);
+//
+//        officeService.saveOffice(tmp);
+//        return officeService.convertToDTO(tmp);
+        return officeService.createOffice(office);
     }
 
     @PostMapping(path="/update")
     public void update(@RequestBody Office office) {
         officeService.updateOffice(office);
-        //return "Successfully updated office with name: " + office.getName();
     }
 
     @DeleteMapping(path="/delete")
@@ -56,23 +51,13 @@ public class OfficeController {
         Office office = officeService.getOfficeById(id);
         if(office != null) {
             officeService.deleteOffice(office.getId());
-            //return "Office " + office.getName() + " successfully deleted!";
         }
-//        else {
-//            return "Delivery does not exist!";
-//        }
     }
 
     @GetMapping(path="/all")
     public List<OfficeDTO> getAllOffices() {
-        List<Office> deliveries = officeService.getOffices();
-        List<OfficeDTO> officeDTOS = new ArrayList<>();
-
-        for(Office o : deliveries) {
-            OfficeDTO officeDTO = officeService.convertToDTO(o);
-            officeDTOS.add(officeDTO);
-        }
-        return officeDTOS;
+        List<Office> offices = officeService.getOffices();
+        return officeService.listEntitiesToDTO(offices);
     }
 
     @GetMapping(path="/office")

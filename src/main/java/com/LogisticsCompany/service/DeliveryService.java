@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface DeliveryService {
     Delivery saveDelivery(Delivery delivery);
+    DeliveryDTO createDelivery(DeliveryDTO deliveryDTO);
     void updateDelivery(DeliveryDTO deliveryDTO);
     void deleteDelivery(Long id);
     Delivery getDelivery(Long id);
@@ -18,4 +19,5 @@ public interface DeliveryService {
     List<Delivery> takeAllDeliveriesRegisteredByEmployee(Long id);
     List<Delivery> takeAllDeliveriesThatAreNotReceived();
     List<Delivery> takeAllDeliveriesForCustomer(String sender);
+    List<DeliveryDTO> listEntitiesToDTO(List<Delivery> deliveries);
 }

@@ -1,6 +1,7 @@
 package com.LogisticsCompany.service;
 
 import com.LogisticsCompany.dto.OfficeDTO;
+import com.LogisticsCompany.entity.Company;
 import com.LogisticsCompany.entity.Office;
 import com.LogisticsCompany.repo.OfficeRepo;
 import org.hibernate.exception.ConstraintViolationException;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +29,18 @@ public class OfficeServiceImpl implements OfficeService{
     @Override
     public Office saveOffice(Office office) throws ConstraintViolationException {
         return officeRepo.save(office);
+    }
+
+    @Override
+    public OfficeDTO createOffice(Office office) {
+        Company company = companyService.getCompany(office.getCompany().getId());
+        Office tmp = new Office(null,
+                office.getName(),
+                office.getAddress(),
+                company);
+
+        this.saveOffice(tmp);
+        return this.convertToDTO(tmp);
     }
 
     @Override
@@ -82,5 +96,16 @@ public class OfficeServiceImpl implements OfficeService{
             office.setCompany(companyService.convertToEntity(officeDTO.getCompany()));
         }
         return office;
+    }
+
+    @Override
+    public List<OfficeDTO> listEntitiesToDTO(List<Office> offices) {
+        List<OfficeDTO> officeDTOS = new ArrayList<>();
+
+        for(Office o : offices) {
+            OfficeDTO officeDTO = this.convertToDTO(o);
+            officeDTOS.add(officeDTO);
+        }
+        return officeDTOS;
     }
 }

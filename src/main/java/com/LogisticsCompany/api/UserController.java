@@ -51,7 +51,6 @@ public class UserController {
     @PostMapping(path="/update")
     public void update(@RequestBody AppUser user) {
         userService.updateUser(user);
-        //return "Successfully updated user with username: " + user.getUsername();
     }
 
     @DeleteMapping(path="/delete")
@@ -59,11 +58,7 @@ public class UserController {
         AppUser user = userService.getUser(username);
         if(user != null) {
             userService.deleteUser(user.getId());
-            //return "User " + user.getUsername() + " successfully deleted!";
         }
-//        else {
-//            return "User " + username + " does not exist!";
-//        }
     }
 
     @GetMapping(path="/user")

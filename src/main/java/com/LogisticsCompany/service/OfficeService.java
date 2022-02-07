@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface OfficeService {
     Office saveOffice(Office office);
+    OfficeDTO createOffice(Office office);
     void updateOffice(Office office);
     void deleteOffice(Long id);
     Office getOffice(String address);
@@ -14,4 +15,5 @@ public interface OfficeService {
     List<Office> getOffices();
     OfficeDTO convertToDTO(Office office);
     Office convertToEntity(OfficeDTO office);
+    List<OfficeDTO> listEntitiesToDTO(List<Office> offices);
 }

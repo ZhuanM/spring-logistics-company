@@ -33,36 +33,14 @@ public class DeliveryController {
         this.companyService = companyService;
     }
 
-    @GetMapping(path="")
-    public String greet() {
-        return "Page for deliveries of NBU Logistics Company";
-    }
-
     @PostMapping(path="/save")
     public DeliveryDTO saveDelivery(@RequestBody DeliveryDTO deliveryDTO) {
-        AppUser user = userService.getUser(deliveryDTO.getRegisteredBy());
-        Company company = companyService.getCompanyBySymbol(deliveryDTO.getCompanySymbol());
-
-        Delivery tmp = new Delivery(null,
-                company,
-                user,
-                deliveryDTO.getSenderUsername(),
-                deliveryDTO.getRecipient(),
-                deliveryDTO.getStatus(),
-                deliveryDTO.getRecipientAddress(),
-                LocalDate.parse(deliveryDTO.getSentDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                LocalDate.parse(deliveryDTO.getETA(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                deliveryDTO.getWeight(),
-                deliveryDTO.getWeight() * 2.5);
-
-        deliveryService.saveDelivery(tmp);
-        return deliveryService.convertToDTO(tmp);
+        return deliveryService.createDelivery(deliveryDTO);
     }
 
     @PostMapping(path="/update")
     public void update(@RequestBody DeliveryDTO deliveryDTO) {
         deliveryService.updateDelivery(deliveryDTO);
-        //return "Successfully updated delivery with name: " + deliveryDTO.getName();
     }
 
     @DeleteMapping(path="/delete")
@@ -70,11 +48,7 @@ public class DeliveryController {
         Delivery delivery = deliveryService.getDelivery(id);
         if(delivery != null) {
             deliveryService.deleteDelivery(delivery.getId());
-            //return "Delivery " + delivery.getName() + " successfully deleted!";
         }
-//        else {
-//            return "Delivery does not exist!";
-//        }
     }
 
     @GetMapping(path="/all")
@@ -103,13 +77,14 @@ public class DeliveryController {
     @GetMapping(path = "/all/user")
     public List<DeliveryDTO> getAllDeliveriesFromUser(@RequestParam String username) {
         List<Delivery> deliveries = deliveryService.takeAllDeliveriesForCustomer(username);
-        List<DeliveryDTO> deliveriesDTOS = new ArrayList<>();
-
-        for(Delivery d : deliveries) {
-            DeliveryDTO deliveryDTO = deliveryService.convertToDTO(d);
-            deliveriesDTOS.add(deliveryDTO);
-        }
-        return deliveriesDTOS;
+//        List<DeliveryDTO> deliveriesDTOS = new ArrayList<>();
+//
+//        for(Delivery d : deliveries) {
+//            DeliveryDTO deliveryDTO = deliveryService.convertToDTO(d);
+//            deliveriesDTOS.add(deliveryDTO);
+//        }
+//        return deliveriesDTOS;
+        return deliveryService.listEntitiesToDTO(deliveries);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.LogisticsCompany.service;
 
 import com.LogisticsCompany.dto.DeliveryDTO;
+import com.LogisticsCompany.entity.AppUser;
+import com.LogisticsCompany.entity.Company;
 import com.LogisticsCompany.entity.Delivery;
 import com.LogisticsCompany.repo.DeliveryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +34,32 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Override
     public Delivery saveDelivery(Delivery delivery) {
         return deliveryRepo.save(delivery);
+    }
+
+    @Override
+    public DeliveryDTO createDelivery(DeliveryDTO deliveryDTO) {
+        AppUser user = userService.getUser(deliveryDTO.getRegisteredBy());
+        Company company = companyService.getCompanyBySymbol(deliveryDTO.getCompanySymbol());
+
+        String address = deliveryDTO.getRecipientAddress();
+        if(address.isEmpty()) {
+            address = "IN_OFFICE";
+        }
+        double price = (address.equals("IN_OFFICE")) ? deliveryDTO.getWeight() * 2.5 : deliveryDTO.getWeight() * 2.5 + 6.80;
+        Delivery tmp = new Delivery(null,
+                company,
+                user,
+                deliveryDTO.getSenderUsername(),
+                deliveryDTO.getRecipient(),
+                deliveryDTO.getStatus(),
+                address,
+                LocalDate.parse(deliveryDTO.getSentDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                LocalDate.parse(deliveryDTO.getETA(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                deliveryDTO.getWeight(),
+                price);
+
+        deliveryRepo.save(tmp);
+        return this.convertToDTO(tmp);
     }
 
     @Override
@@ -113,4 +142,14 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Override
     public List<Delivery> takeAllDeliveriesForCustomer(String sender) { return deliveryRepo.takeAllDeliveriesForCustomer(sender); }
 
+    @Override
+    public List<DeliveryDTO> listEntitiesToDTO(List<Delivery> deliveries) {
+        List<DeliveryDTO> deliveriesDTOS = new ArrayList<>();
+
+        for(Delivery d : deliveries) {
+            DeliveryDTO deliveryDTO = this.convertToDTO(d);
+            deliveriesDTOS.add(deliveryDTO);
+        }
+        return deliveriesDTOS;
+    }
 }
