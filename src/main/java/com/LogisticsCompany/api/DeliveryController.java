@@ -10,9 +10,12 @@ import com.LogisticsCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4202")
 @RestController
 @RequestMapping(path = "/api/deliveries")
 public class DeliveryController {
@@ -30,47 +33,21 @@ public class DeliveryController {
         this.companyService = companyService;
     }
 
-    @GetMapping(path="")
-    public String greet() {
-        return "Page for deliveries of NBU Logistics Company";
-    }
-
     @PostMapping(path="/save")
-    public DeliveryDTO saveDelivery(@RequestBody Delivery delivery) {
-        AppUser user = userService.getUser(delivery.getRegisteredBy().getUsername());
-        Company company = companyService.getCompany(delivery.getCompany().getId());
-
-        Delivery tmp = new Delivery(null,
-                company,
-                user,
-                delivery.getSenderUsername(),
-                delivery.getRecipient(),
-                delivery.getCurrent_location(),
-                delivery.getRecipientAddress(),
-                delivery.getSentDate(),
-                delivery.getETA(),
-                delivery.getWeight(),
-                delivery.getPrice());
-
-        deliveryService.saveDelivery(tmp);
-        return deliveryService.convertToDTO(tmp);
+    public DeliveryDTO saveDelivery(@RequestBody DeliveryDTO deliveryDTO) {
+        return deliveryService.createDelivery(deliveryDTO);
     }
 
-    @PutMapping(path="/update")
-    public String update(@RequestBody Delivery delivery) {
-        deliveryService.updateDelivery(delivery);
-        return "Successfully updated delivery with name: " + delivery.getName();
+    @PostMapping(path="/update")
+    public void update(@RequestBody DeliveryDTO deliveryDTO) {
+        deliveryService.updateDelivery(deliveryDTO);
     }
 
     @DeleteMapping(path="/delete")
-    public String delete(@RequestParam Long id) {
+    public void delete(@RequestParam Long id) {
         Delivery delivery = deliveryService.getDelivery(id);
         if(delivery != null) {
             deliveryService.deleteDelivery(delivery.getId());
-            return "Delivery " + delivery.getName() + " successfully deleted!";
-        }
-        else {
-            return "Delivery does not exist!";
         }
     }
 
@@ -95,6 +72,19 @@ public class DeliveryController {
         else {
             return deliveryService.convertToDTO(delivery);
         }
+    }
+
+    @GetMapping(path = "/all/user")
+    public List<DeliveryDTO> getAllDeliveriesFromUser(@RequestParam String username) {
+        List<Delivery> deliveries = deliveryService.takeAllDeliveriesForCustomer(username);
+//        List<DeliveryDTO> deliveriesDTOS = new ArrayList<>();
+//
+//        for(Delivery d : deliveries) {
+//            DeliveryDTO deliveryDTO = deliveryService.convertToDTO(d);
+//            deliveriesDTOS.add(deliveryDTO);
+//        }
+//        return deliveriesDTOS;
+        return deliveryService.listEntitiesToDTO(deliveries);
     }
 
 }

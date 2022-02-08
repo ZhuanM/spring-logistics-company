@@ -2,10 +2,11 @@ package com.LogisticsCompany.service;
 
 import com.LogisticsCompany.dto.AppUserDTO;
 import com.LogisticsCompany.entity.AppUser;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     AppUser saveUser(AppUser user);
     void updateUser(AppUser user);
     void deleteUser(Long id);

@@ -11,6 +11,7 @@ public interface CompanyService {
     void updateCompany(Company company);
     void deleteCompany(Long id);
     Company getCompany(Long id);
+    Company getCompanyBySymbol(String symbol);
     List<Company> getCompanies();
     CompanyDTO convertToDTO(Company company);
     Company convertToEntity(CompanyDTO companyDTO);

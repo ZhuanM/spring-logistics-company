@@ -21,6 +21,9 @@ public class Company {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "symbol", unique = true, nullable = false)
+    private String symbol;
+
     @OneToMany(mappedBy = "company")
     private List<Delivery> deliveryList;
 
@@ -30,9 +33,10 @@ public class Company {
     public Company() {
     }
 
-    public Company(Long id, String name) {
+    public Company(Long id, String name, String symbol) {
         this.id = id;
         this.name = name;
+        this.symbol = symbol;
         this.deliveryList = new ArrayList<>();
         this.officeList = new ArrayList<>();
     }
@@ -47,6 +51,7 @@ public class Company {
         }
     }
 
+    //Getters
     public Long getId() {
         return id;
     }
@@ -55,12 +60,37 @@ public class Company {
         return name;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
     public List<Delivery> getDeliveryList() {
         return deliveryList;
     }
 
     public List<Office> getOfficeList() {
         return officeList;
+    }
+
+    //Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public void setDeliveryList(List<Delivery> deliveryList) {
+        this.deliveryList = deliveryList;
+    }
+
+    public void setOfficeList(List<Office> officeList) {
+        this.officeList = officeList;
     }
 
     @Override

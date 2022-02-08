@@ -1,20 +1,19 @@
 package com.LogisticsCompany.api;
 
+import com.LogisticsCompany.config.JwtUtility;
+import com.LogisticsCompany.dto.AppUserDTO;
 import com.LogisticsCompany.entity.AppUser;
+import com.LogisticsCompany.entity.RoleType;
 import com.LogisticsCompany.service.UserService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4202")
 @RestController
 @RequestMapping(path = "/api/users")
 public class UserController {
@@ -32,15 +31,10 @@ public class UserController {
         return "NBU Logistics Company";
     }
 
-    @GetMapping(path="/all")
-    public List<AppUser> getAllUsers() {
-        return userService.getUsers();
-    } //using userService.findAll();???
-
     @PostMapping(path="/register")
-    public AppUser saveUser(@RequestBody AppUser user) {
-        System.out.println(user);
-        return userService.saveUser(user);
+    public void register(@RequestBody AppUserDTO userDTO) throws Exception {
+        AppUser user = userService.convertToEntity(userDTO);
+        userService.saveUser(user);
     }
 
     @GetMapping(path="/login")
@@ -54,38 +48,43 @@ public class UserController {
         }
     }
 
-    @PutMapping(path="/update")
-    public String update(@RequestBody AppUser user) {
+    @PostMapping(path="/update")
+    public void update(@RequestBody AppUser user) {
         userService.updateUser(user);
-        return "Successfully updated user with username: " + user.getUsername();
     }
 
-//    @PutMapping(path="/update")
-//    public AppUser updateUser(@RequestBody AppUser user, @PathVariable ("username") String username){
-//        user = userService.getUser(username);
-//        user.setFullName(user.getFullName());
-//        user.setEmail(user.getEmail());
-//        return this.userService.saveUser(user);
-//    }
-
     @DeleteMapping(path="/delete")
-    public String delete(@RequestParam String username) {
+    public void delete(@RequestParam String username) {
         AppUser user = userService.getUser(username);
         if(user != null) {
             userService.deleteUser(user.getId());
-            return "User " + user.getUsername() + " successfully deleted!";
-        }
-        else {
-            return "User " + username + " does not exist!";
         }
     }
 
-   /*     @GetMapping(path="/save")
-    public void addRoleToUser(@RequestBody UseForm userForm) {
+    @GetMapping(path="/user")
+    public AppUserDTO getDelivery(@RequestParam String username) {
+        AppUser user = userService.getUser(username);
+        if(user == null) {
+            return new AppUserDTO();
+        }
+        else {
+            return userService.convertToDTO(user);
+        }
+    }
 
-        userService.addRoleToUser(userForm.getUsername(), userForm.getRoleName());
+    @GetMapping(path="/all")
+    public List<AppUser> getAllUsers() {
+        return userService.getUsers();
+    } //using userService.findAll();???
 
-    }*/
+    @GetMapping(path = "/employees")
+    public List<AppUser> getAllEmployees() {
+        return userService.getAllEmployees();
+    }
 
+    @GetMapping(path = "/customers")
+    public List<AppUser> getAllCustomers() {
+        return userService.getAllCustomers();
+    }
 
 }
