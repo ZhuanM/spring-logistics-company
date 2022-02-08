@@ -42,8 +42,8 @@ public class LogisticsCompanyApplication {
 		return args -> {
 
 			userService.saveUser(new AppUser(null,
-					"stoqn_kolev@gmail.com",
-					"Stoqn Kolev",
+					"stoqn_stoqnov@gmail.com",
+					"Stoqn Stoqn",
 					"klimatik1",
 					//new Role(null, "USER"),
 					"username1"));
@@ -65,21 +65,51 @@ public class LogisticsCompanyApplication {
 					"klimatik22222",
 					//new Role(null, "ADMIN"),
 					"username4"));
+			userService.saveUser(new AppUser(null,
+					"ivan@mail.bg",
+					"Ivan Ivanov",
+					"password5",
+					RoleType.USER,
+					"username5"));
+			userService.saveUser(new AppUser(null,
+					"cooguy69@mail.bg",
+					"Teodor Teodorov",
+					"password6",
+					RoleType.USER,
+					"username6"));
+			userService.saveUser(new AppUser(null,
+					"totallyacourier@mail.bg",
+					"Kurier Kurierov",
+					"courier1",
+					RoleType.USER,
+					"courier1"));
+			userService.saveUser(new AppUser(null,
+					"totallyacourier2@mail.bg",
+					"Kurierov Kurier",
+					"courier2",
+					RoleType.USER,
+					"courier2"));
 
 			AppUser tmp = new AppUser(null,
 					"asd@gmail.com",
 					"Test Subject",
 					"123",
 					RoleType.ADMIN,
-					"user");
+					"admin");
 			userService.saveUser(tmp);
 
 			Company company = new Company(null, "Ekont", "EKNT");
 			companyService.saveCompany(company);
 
-			Office o = new Office(null, "Office1", "Montevideo 15", company);
+			Office o = new Office(null, "Main Office", "ul. Montevideo 15", company);
+			Office o2 = new Office(null, "Office2", "ul. Dobrichine 20, Sofia", company);
+			Office o3 = new Office(null, "Office3", "Montevideo 15", company);
 			officeService.saveOffice(o);
+			officeService.saveOffice(o2);
+			officeService.saveOffice(o3);
 			company.addOffice(o);
+			company.addOffice(o2);
+			company.addOffice(o3);
 
 			Delivery d = new Delivery(null,
 					company,
@@ -91,23 +121,38 @@ public class LogisticsCompanyApplication {
 					LocalDate.now(),
 					LocalDate.now(),
 					118.5,
-					67.99);
+					815.80);
 			deliveryService.saveDelivery(d);
 			tmp.addDelivery(d);
 
 			Delivery d2 = new Delivery(null,
 					company,
 					tmp,
-					"username2",
-					"Ivan",
+					"username6",
+					"Vladimir",
 					DeliveryLocation.IN_OFFICE,
 					"Berlin",
 					LocalDate.now(),
 					LocalDate.now(),
-					65,
+					312,
 					1239.99);
 			deliveryService.saveDelivery(d2);
 			tmp.addDelivery(d2);
+
+			Delivery d3 = new Delivery(null,
+					company,
+					tmp,
+					"username6",
+					"Ivan",
+					DeliveryLocation.IN_COURIER,
+					"Sofia",
+					LocalDate.now(),
+					LocalDate.now(),
+					65,
+					109.68);
+			deliveryService.saveDelivery(d3);
+			tmp.addDelivery(d3);
+
 
 			userService.addRoleToUser("username1", "USER");
 			userService.addRoleToUser("username3", "COURIER");
