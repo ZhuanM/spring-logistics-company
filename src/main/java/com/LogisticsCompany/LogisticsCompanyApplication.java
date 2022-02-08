@@ -81,13 +81,13 @@ public class LogisticsCompanyApplication {
 					"totallyacourier@mail.bg",
 					"Kurier Kurierov",
 					"courier1",
-					RoleType.USER,
+					RoleType.COURIER,
 					"courier1"));
 			userService.saveUser(new AppUser(null,
 					"totallyacourier2@mail.bg",
 					"Kurierov Kurier",
 					"courier2",
-					RoleType.USER,
+					RoleType.COURIER,
 					"courier2"));
 
 			AppUser tmp = new AppUser(null,
@@ -101,7 +101,7 @@ public class LogisticsCompanyApplication {
 			Company company = new Company(null, "Ekont", "EKNT");
 			companyService.saveCompany(company);
 
-			Office o = new Office(null, "Main Office", "ul. Montevideo 15", company);
+			Office o = new Office(null, "Main Office", "bul. Montevideo 15", company);
 			Office o2 = new Office(null, "Office2", "ul. Dobrichine 20, Sofia", company);
 			Office o3 = new Office(null, "Office3", "Montevideo 15", company);
 			officeService.saveOffice(o);
